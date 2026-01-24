@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: DocApi
+  datasource:
+    url: jdbc:postgresql://localhost:5432/docgen
+    username: docgen
+    password: docgen
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info

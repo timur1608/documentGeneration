@@ -1,11 +1,11 @@
 package pdfservice.docapi.common.api.dto;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import tools.jackson.databind.JsonNode;
 
 import java.util.UUID;
 

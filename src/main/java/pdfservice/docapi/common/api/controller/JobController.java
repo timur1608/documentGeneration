@@ -2,7 +2,9 @@ package pdfservice.docapi.common.api.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pdfservice.docapi.common.api.dto.CreateJobRequestDto;
@@ -21,8 +23,8 @@ public class JobController {
     }
 
     @PostMapping
-    CreateJobResponseDto createJob(@Valid CreateJobRequestDto request) {
+    ResponseEntity<CreateJobResponseDto> createJob(@Valid @RequestBody CreateJobRequestDto request) {
         UUID jobId = jobService.createJob(request);
-        return new CreateJobResponseDto(jobId, "QUEUED");
+        return ResponseEntity.ok(new CreateJobResponseDto(jobId, "QUEUED"));
     }
 }

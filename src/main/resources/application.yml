@@ -16,6 +16,10 @@ spring:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
+scheduler:
+  enabled:
+    true
+
 management:
   endpoints:
     web:

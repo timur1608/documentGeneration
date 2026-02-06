@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pdfservice.docapi.common.api.dto.CreateJobRequestDto;
 import pdfservice.docapi.common.api.repository.JobRepository;
 import pdfservice.docapi.common.api.repository.OutboxRepository;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 import java.util.UUID;

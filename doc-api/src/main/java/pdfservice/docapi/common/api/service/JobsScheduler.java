@@ -2,11 +2,9 @@ package pdfservice.docapi.common.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import pdfservice.docapi.common.api.dto.OutboxEvent;
+import pdfservice.docapi.common.api.dto.OutboxRecord;
 import pdfservice.docapi.common.api.repository.OutboxRepository;
 
 import java.util.List;
@@ -24,7 +22,7 @@ public class JobsScheduler {
 
     @Scheduled(fixedRate = 3000)
     public void send() throws ExecutionException, InterruptedException {
-        List<OutboxEvent> events = outboxRepository.getFiveEvents();
+        List<OutboxRecord> events = outboxRepository.getFiveEvents();
         for (var event : events){
             kafkaTemplate.send("jobs.queue", event).get();
         }

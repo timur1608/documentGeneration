@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import pdfservice.docapi.common.api.dto.OutboxEvent;
+import pdfservice.docapi.common.api.dto.OutboxRecord;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -29,13 +29,13 @@ public class OutboxRepository {
         """, aggregate_type, aggregate_id, event_type, payload);
     }
 
-    public List<OutboxEvent> getFiveEvents() {
+    public List<OutboxRecord> getFiveEvents() {
         return jdbcTemplate.query(""" 
         SELECT aggregate_type, aggregate_id, event_type, payload
         FROM outbox
         WHERE published_at IS NULL ORDER BY created_at LIMIT 5
         """,
-                (rs, rowNum) -> new OutboxEvent(
+                (rs, rowNum) -> new OutboxRecord(
                         rs.getString("aggregate_type"),
                         rs.getObject("aggregate_id", UUID.class),
                         rs.getString("event_type"),
@@ -44,7 +44,7 @@ public class OutboxRepository {
     }
 
     @Transactional
-    public void saveEvents(List<OutboxEvent> events) {
+    public void saveEvents(List<OutboxRecord> events) {
         if (events.isEmpty()){
             return;
         }

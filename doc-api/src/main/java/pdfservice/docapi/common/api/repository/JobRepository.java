@@ -16,11 +16,12 @@ public class JobRepository {
     }
 
     public UUID createJobOrFindExisting(UUID id, UUID tenant_id, UUID template_version_id, String request_id, String payload) {
-        jdbcTemplate.update("""
+        return jdbcTemplate.queryForObject("""
                 INSERT INTO jobs(id, tenant_id, template_version_id, request_id, payload, status)
                 VALUES (?, ?, ?, ?, cast(? as jsonb), 'QUEUED')
-                ON CONFLICT (tenant_id, request_id) DO NOTHING
-                """, id, tenant_id, template_version_id, request_id, payload);
-        return id;
+                ON CONFLICT (tenant_id, request_id) DO UPDATE
+                SET request_id = EXCLUDED.request_id
+                RETURNING ID
+                """, UUID.class, id, tenant_id, template_version_id, request_id, payload);
     }
 }

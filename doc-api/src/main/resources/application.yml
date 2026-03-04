@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: DocApi
+  datasource:
+    url: jdbc:postgresql://localhost:5432/docgen
+    username: docgen
+    password: docgen
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    placeholder-replacement: false
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual
+
+scheduler:
+  enabled:
+    true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+s3:
+  endpoint: https://storage.yandexcloud.net
+  region: ru-central1
+  access-key: xxxx
+  secret-key: xxxx
+  bucket: generated-docs-by-templates

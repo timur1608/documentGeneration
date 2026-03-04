@@ -1,0 +1,33 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: DocRenderer
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    placeholder-replacement: false
+    table: flyway_schema_history_doc_renderer
+    schemas: doc_renderer
+    create-schemas: true
+  kafka:
+    consumer:
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  datasource:
+    url: jdbc:postgresql://localhost:5432/docgen
+    username: docgen
+    password: docgen
+    hikari:
+      schema: doc_renderer
+
+s3:
+  endpoint: https://storage.yandexcloud.net
+  region: ru-central1
+  access-key: xxxx
+  secret-key: xxxx
+  bucket: generated-docs-by-templates

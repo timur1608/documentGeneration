@@ -1,0 +1,12 @@
+package pdfservice.docrenderer;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DocRendererApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DocRendererApplication.class, args);
+    }
+}

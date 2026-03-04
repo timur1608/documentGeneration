@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pdfservice.docapi.common.api.dto.CreateJobRequestDto;
+import pdfservice.docapi.common.api.dto.OutboxFinishedJobRecord;
 import pdfservice.docapi.common.api.repository.JobRepository;
 import pdfservice.docapi.common.api.repository.OutboxRepository;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.Map;
@@ -36,6 +38,10 @@ public class JobService {
         return jobId;
     }
 
+    public void finishEvent(OutboxFinishedJobRecord event){
+        jobRepository.finishJob(event.jobId());
+    }
+
     private String getJobPayload(CreateJobRequestDto request, UUID jobId) {
         return objectMapper.valueToTree(
                 Map.ofEntries(
@@ -45,5 +51,9 @@ public class JobService {
                         Map.entry("requestId", request.requestId())
                 )
         ).toString();
+    }
+
+    public JsonNode getJobPayload(UUID jobId){
+        return objectMapper.readTree(jobRepository.findJobPayload(jobId));
     }
 }

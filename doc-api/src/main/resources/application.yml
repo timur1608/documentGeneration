@@ -15,6 +15,10 @@ spring:
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual
 
 scheduler:
   enabled:
@@ -25,3 +29,10 @@ management:
     web:
       exposure:
         include: health, info
+
+s3:
+  endpoint: https://storage.yandexcloud.net
+  region: ru-central1
+  access-key: xxxx
+  secret-key: xxxx
+  bucket: generated-docs-by-templates

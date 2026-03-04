@@ -29,11 +29,21 @@ public class OutboxRepository {
         """, aggregate_type, aggregate_id, event_type, payload);
     }
 
+    @Transactional
     public List<OutboxRecord> getFiveEvents() {
         return jdbcTemplate.query(""" 
+        WITH selected AS (
         SELECT aggregate_type, aggregate_id, event_type, payload
         FROM outbox
-        WHERE published_at IS NULL ORDER BY created_at LIMIT 5
+        WHERE published_at IS NULL AND 
+              (locked_until IS NULL OR locked_until < now())
+              ORDER BY created_at LIMIT 5
+        FOR UPDATE SKIP LOCKED )
+            UPDATE outbox o 
+            SET locked_until = now() + interval '1 minute'
+            FROM selected
+            WHERE o.aggregate_id = selected.aggregate_id
+            RETURNING o.aggregate_type, o.aggregate_id, o.event_type, o.payload
         """,
                 (rs, rowNum) -> new OutboxRecord(
                         rs.getString("aggregate_type"),

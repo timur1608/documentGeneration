@@ -51,7 +51,7 @@ public class DocGeneratorService {
         repository.saveEvent(finishedJob);
     }
 
-    private String generateByTemplateId(UUID templateVersionId, UUID jobId) {
+    String generateByTemplateId(UUID templateVersionId, UUID jobId) {
         String content = templateService.getTemplateById(templateVersionId);
         GetJobResponseDto job = jobService.getJobPayload(jobId);
         try {

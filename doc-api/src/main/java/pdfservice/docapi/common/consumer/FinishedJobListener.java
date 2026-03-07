@@ -8,17 +8,20 @@ import org.springframework.stereotype.Service;
 import pdfservice.docapi.common.api.dto.OutboxFinishedJobRecord;
 import pdfservice.docapi.common.api.service.JobService;
 import pdfservice.docapi.common.api.service.S3Service;
+import pdfservice.docapi.common.api.service.WebHookService;
 
 @Slf4j
 @Service
 public class FinishedJobListener {
     private JobService jobService;
     private S3Service s3Service;
+    private WebHookService webHookService;
 
     @Autowired
-    public FinishedJobListener(JobService  jobService, S3Service s3Service){
+    public FinishedJobListener(JobService  jobService, S3Service s3Service, WebHookService webHookService){
         this.jobService = jobService;
         this.s3Service = s3Service;
+        this.webHookService = webHookService;
     }
 
     @KafkaListener(
@@ -29,7 +32,8 @@ public class FinishedJobListener {
     )
     public void listen(OutboxFinishedJobRecord event, Acknowledgment ack){
         log.info("Received event {}", event);
-        jobService.finishEvent(event);
+        String webHookUrl = jobService.finishEventAndGetWebHookUrl(event);
+        webHookService.uploadFileToUrl(webHookUrl, event.jobId(), s3Service.getSignedUrl(event.key()));
         log.info("Uploaded file {}", s3Service.getSignedUrl(event.key()));
         ack.acknowledge();
     }

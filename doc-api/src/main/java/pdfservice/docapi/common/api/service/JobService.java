@@ -32,14 +32,15 @@ public class JobService {
                 request.tenantId(),
                 request.templateVersionId(),
                 request.requestId(),
-                request.payload().toString()
+                request.payload().toString(),
+                request.webhookUrl()
         );
         outboxRepository.publishJob("job", jobId, "job.queued", getJobPayload(request, jobId));
         return jobId;
     }
 
-    public void finishEvent(OutboxFinishedJobRecord event){
-        jobRepository.finishJob(event.jobId());
+    public String finishEventAndGetWebHookUrl(OutboxFinishedJobRecord event){
+        return jobRepository.finishJob(event.jobId());
     }
 
     private String getJobPayload(CreateJobRequestDto request, UUID jobId) {

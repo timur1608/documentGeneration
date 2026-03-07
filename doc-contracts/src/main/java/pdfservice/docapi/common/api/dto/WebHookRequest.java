@@ -2,7 +2,7 @@ package pdfservice.docapi.common.api.dto;
 
 import java.util.UUID;
 
-public record WebHookResponse(
+public record WebHookRequest(
     UUID jobId,
     String status,
     String s3Url

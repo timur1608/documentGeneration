@@ -19,6 +19,7 @@ dependencies {
     implementation("software.amazon.awssdk:apache-client:2.41.32")
 //    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     annotationProcessor 'org.projectlombok:lombok'
+    testImplementation("org.springframework.boot:spring-boot-starter-test:4.1.0-M2")
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jdbc-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-flyway-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

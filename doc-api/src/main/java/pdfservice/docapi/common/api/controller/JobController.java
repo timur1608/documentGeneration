@@ -27,7 +27,7 @@ public class JobController {
     }
 
     @GetMapping("/{jobId}")
-    ResponseEntity<GetJobResponseDto> findJob(@PathVariable UUID jobId) {
+    ResponseEntity<GetJobResponseDto> findJob(@PathVariable("jobId") UUID jobId) {
         return ResponseEntity.ok(new GetJobResponseDto(jobService.getJobPayload(jobId)));
     }
 }

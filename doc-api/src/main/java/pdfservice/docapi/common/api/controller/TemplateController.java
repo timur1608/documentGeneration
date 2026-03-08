@@ -21,7 +21,7 @@ public class TemplateController {
         this.templateRepository = templateRepository;
     }
     @GetMapping("/{templateVersionId}")
-    public ResponseEntity<String> getTemplate(@PathVariable UUID templateVersionId) {
+    public ResponseEntity<String> getTemplate(@PathVariable("templateVersionId") UUID templateVersionId) {
         Optional<String> content = templateRepository.getContent(templateVersionId);
         return content.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().body("No templateVersionId found"));
     }

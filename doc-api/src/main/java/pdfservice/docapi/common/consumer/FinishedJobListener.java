@@ -2,6 +2,7 @@ package pdfservice.docapi.common.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import pdfservice.docapi.common.api.service.WebHookService;
 
 @Slf4j
 @Service
+@ConditionalOnProperty(name = "kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class FinishedJobListener {
     private JobService jobService;
     private S3Service s3Service;

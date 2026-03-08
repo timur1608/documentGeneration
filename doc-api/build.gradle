@@ -1,3 +1,9 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+description = 'DocApi'
+
 dependencies {
     implementation project(':doc-contracts')
 
